@@ -59,15 +59,15 @@ export function Header({ onThemeChange, currentTheme }: HeaderProps) {
             <span className="font-medium">Movies</span>
           </Link>
           <Link
-            to="/wishlist"
+            to="/watch-later"
             className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all ${
-              isActive("/wishlist")
+              isActive("/watch-later")
                 ? "bg-gradient-accent text-white shadow-glow"
                 : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
             }`}
           >
             <Heart className="w-4 h-4" />
-            <span className="font-medium">Wishlist</span>
+            <span className="font-medium">Watch Later</span>
           </Link>
         </nav>
 

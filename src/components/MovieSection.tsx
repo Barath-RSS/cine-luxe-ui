@@ -18,9 +18,10 @@ interface MovieSectionProps {
   movies: Movie[];
   onLike?: (id: number) => void;
   onDislike?: (id: number) => void;
-  onAddToWishlist?: (id: number) => void;
+  onAddToWatchLater?: (id: number) => void;
+  onMovieClick?: (movie: Movie) => void;
   likedMovies?: number[];
-  wishlistMovies?: number[];
+  watchLaterMovies?: number[];
 }
 
 export function MovieSection({
@@ -28,15 +29,16 @@ export function MovieSection({
   movies,
   onLike,
   onDislike,
-  onAddToWishlist,
+  onAddToWatchLater,
+  onMovieClick,
   likedMovies = [],
-  wishlistMovies = []
+  watchLaterMovies = []
 }: MovieSectionProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
-      const scrollAmount = 320; // Card width + gap
+      const scrollAmount = 280; // Card width + gap
       const newScrollPosition = scrollRef.current.scrollLeft + 
         (direction === 'left' ? -scrollAmount : scrollAmount);
       
@@ -48,7 +50,7 @@ export function MovieSection({
   };
 
   return (
-    <section className="space-y-4">
+    <section className="space-y-6">
       {/* Section Header */}
       <div className="flex items-center justify-between">
         <h2 className="font-display font-semibold text-2xl text-foreground">
@@ -66,7 +68,7 @@ export function MovieSection({
           </Button>
           <Button
             variant="ghost"
-            size="sm"
+            size="sm"  
             onClick={() => scroll('right')}
             className="w-10 h-10 rounded-full bg-surface hover:bg-surface-elevated border border-border/50"
           >
@@ -78,8 +80,8 @@ export function MovieSection({
       {/* Movies Scroll Container */}
       <div
         ref={scrollRef}
-        className="flex space-x-4 overflow-x-auto custom-scrollbar pb-4"
-        style={{ scrollbarWidth: 'thin' }}
+        className="flex space-x-6 overflow-x-auto scrollbar-hide pb-2"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {movies.map((movie) => (
           <MovieCard
@@ -93,9 +95,10 @@ export function MovieSection({
             description={movie.description}
             onLike={onLike}
             onDislike={onDislike}
-            onAddToWishlist={onAddToWishlist}
+            onAddToWatchLater={onAddToWatchLater}
+            onMovieClick={onMovieClick}
             isLiked={likedMovies.includes(movie.id)}
-            isInWishlist={wishlistMovies.includes(movie.id)}
+            isInWatchLater={watchLaterMovies.includes(movie.id)}
             className="flex-none"
           />
         ))}

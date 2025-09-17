@@ -13,9 +13,10 @@ interface MovieCardProps {
   description?: string;
   onLike?: (id: number) => void;
   onDislike?: (id: number) => void;
-  onAddToWishlist?: (id: number) => void;
+  onAddToWatchLater?: (id: number) => void;
+  onMovieClick?: (movie: { id: number; title: string; year: number; rating: number; genre: string; poster: string; description?: string }) => void;
   isLiked?: boolean;
-  isInWishlist?: boolean;
+  isInWatchLater?: boolean;
   className?: string;
 }
 
@@ -29,20 +30,35 @@ export function MovieCard({
   description,
   onLike,
   onDislike,
-  onAddToWishlist,
+  onAddToWatchLater,
+  onMovieClick,
   isLiked = false,
-  isInWishlist = false,
+  isInWatchLater = false,
   className = "",
 }: MovieCardProps) {
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  const handleBookTickets = () => {
-    // External booking integration
+  const handleMovieClick = () => {
+    if (onMovieClick) {
+      onMovieClick({ id, title, year, rating, genre, poster, description });
+    }
+  };
+
+  const handleBookTickets = (e: React.MouseEvent) => {
+    e.stopPropagation();
     window.open(`https://fandango.com/search?q=${encodeURIComponent(title)}`, '_blank');
   };
 
+  const handleWatchLaterClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onAddToWatchLater?.(id);
+  };
+
   return (
-    <div className={`movie-card group w-64 ${className}`}>
+    <div 
+      className={`movie-card group w-64 cursor-pointer transition-transform duration-300 hover:scale-105 ${className}`}
+      onClick={handleMovieClick}
+    >
       <div className="relative aspect-[3/4] rounded-lg overflow-hidden bg-surface">
         <img
           src={poster}
@@ -94,15 +110,15 @@ export function MovieCard({
               <Button
                 size="sm"
                 variant="secondary"
-                onClick={() => onAddToWishlist?.(id)}
+                onClick={handleWatchLaterClick}
                 className={`w-10 h-8 p-0 ${
-                  isInWishlist 
+                  isInWatchLater 
                     ? 'bg-accent-from text-white' 
                     : 'bg-white/20 text-white hover:bg-white/30'
                 }`}
               >
                 <Heart 
-                  className={`w-4 h-4 ${isInWishlist ? 'fill-current' : ''}`}
+                  className={`w-4 h-4 ${isInWatchLater ? 'fill-current' : ''}`}
                 />
               </Button>
             </div>

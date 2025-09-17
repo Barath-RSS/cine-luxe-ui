@@ -8,7 +8,7 @@ import { Header } from "@/components/Header";
 import Home from "./pages/Home";
 import Movies from "./pages/Movies";
 import Profile from "./pages/Profile";
-import Wishlist from "./pages/Wishlist";
+import WatchLater from "./pages/WatchLater";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -46,7 +46,9 @@ const App = () => {
               <Route path="/" element={<Home />} />
               <Route path="/movies" element={<Movies />} />
               <Route path="/profile" element={<Profile onThemeChange={handleThemeChange} currentTheme={theme} />} />
-              <Route path="/wishlist" element={<Wishlist />} />
+              <Route path="/watch-later" element={<WatchLater />} />
+              {/* Legacy wishlist route redirect */}
+              <Route path="/wishlist" element={<WatchLater />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
